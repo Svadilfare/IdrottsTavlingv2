@@ -47,20 +47,29 @@ public class Main {
         System.out.println(" Add participant");
         System.out.println(" Remove participant");
         System.out.println(" Add result");
-        System.out.println(" Result participant");
-        System.out.println(" Result event");
-        System.out.println(" Result team");
-        System.out.println(" Message");
+        System.out.println(" Participant");
+        System.out.println(" Teams");
+        System.out.println(" Message (followed by your message)");
         System.out.println(" Reinitialize");
         System.out.println(" Exit");
     }
 
     private void manageCommand(String command) {
 
+
+
+
         if (command.matches("message.+")) {
 
             message(command);
-        } else {
+        }
+
+        else if (returnEvents().toLowerCase().indexOf(command.toLowerCase()) != -1){
+            resultEvent(command);
+        }
+
+
+        else {
 
             switch (command) {
                 case "add event":
@@ -75,17 +84,15 @@ public class Main {
                 case "add result":
                     addResult();
                     break;
-                case "result participant":
+                case "participant":
                     resultParticipant();
                     break;
                 case "result event":
-                    resultEvent();
                     break;
-                case "result team":
+                case "teams":
                     resultTeam();
                     break;
                 case "message":
-                    message(keyboard.nextLine());
                     break;
                 case "reinitialize":
                     reinitialize();
@@ -94,16 +101,13 @@ public class Main {
                     exit();
                     break;
                 default:
-                    System.out.println("Wrong command");
+                    System.out.println("Wrong command: " + command);
                     writeMenu();
             }
         }
     }
 
     private void addEvent() {
-        System.out.println("Add new event.");
-
-
 
             System.out.print("Enter name of event: ");
             String eventName = "";
@@ -166,23 +170,15 @@ public class Main {
 
             System.out.println(e.getEventName() + " has been added.");
 
-   //    writeMenu();
     }
 
     private void addParticipant() {
-        System.out.println("Add participant.");
 
-        // String fortsätt = "Yes";
-        //
-        // while (fortsätt.equalsIgnoreCase("Yes")){
 
         System.out.print("Enter participants first name: ");
         String firstName = keyboard.nextLine();
 
         firstName = firstName.trim();
-//		char c[] = firstName.toCharArray();
-//		c[0] = Character.toUpperCase(c[0]);
-//		firstName = new String(c);
 
         while (firstName.equals("")) {
             System.out.println("Names can't be empty!");
@@ -190,18 +186,13 @@ public class Main {
             System.out.print("Enter participants first name: ");
             firstName = keyboard.nextLine();
             firstName = firstName.trim();
-//			char c1[] = firstName.toCharArray();
-//			c1[0] = Character.toUpperCase(c1[0]);
-//			firstName = new String(c1);
+
         }
 
         System.out.print("Enter participants last name: ");
         String lastName = keyboard.nextLine();
 
         lastName = lastName.trim();
-//		char d[] = lastName.toCharArray();
-//		d[0] = Character.toUpperCase(d[0]);
-//		lastName = new String(d);
 
         while (lastName.equals("")) {
             System.out.println("Names can't be empty!");
@@ -209,18 +200,14 @@ public class Main {
             System.out.print("Enter participants last name: ");
             lastName = keyboard.nextLine();
             lastName = lastName.trim();
-//			char d1[] = lastName.toCharArray();
-//			d1[0] = Character.toUpperCase(d1[0]);
-//			lastName = new String(d1);
+
         }
 
         System.out.print("Enter participants team: ");
         String teamName = keyboard.nextLine();
 
         teamName = teamName.trim();
-//		char e[] = teamName.toCharArray();
-//		e[0] = Character.toUpperCase(e[0]);
-//		teamName = new String(e);
+
 
         while (teamName.equals("")) {
             System.out.println("Names can't be empty!");
@@ -231,7 +218,6 @@ public class Main {
             teamName = teamName.trim();
 
         }
-
 
         firstName = firstName.trim().substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
         lastName = lastName.trim().substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
@@ -244,8 +230,15 @@ public class Main {
         System.out.println(p.getFirstName() + " " + p.getLastName() + " from "
                 + p.getTeamName() + " with number " + p.getId() + " has been added.");
 
-     //   execute();
 
+    }
+
+    public String returnEvents(){
+        String events = "";
+        for (Event e : eventArrayList){
+            events += e.getEventName().toLowerCase();
+        }
+        return events;
     }
 
     private void removeParticipant() {
@@ -267,18 +260,16 @@ public class Main {
                 participantArrayList.remove(x);
                 participantFound = true;
 
-          //      writeMenu();
-
             }
         }
 
         if (!participantFound) {
             System.out.println("No participant with number " + enterID + " exists.");
-       //     writeMenu();
+
         }
     }
 
-    private void addResult() {   // <-- denna måste kollas noggrannare
+    private void addResult() {
 
         System.out.print("Enter participants ID: ");
         int writtenId = keyboard.nextInt();
@@ -288,7 +279,6 @@ public class Main {
             for (int x = 0; x < participantArrayList.size(); x++) {
                 if (participantArrayList.get(x).getId() == (writtenId)) {
 
-
                     addResult2(participantArrayList.get(x));
                     participantFound = true;
                 }
@@ -296,13 +286,12 @@ public class Main {
             if (!participantFound) {
                 System.out.println("No participant with number " + writtenId + " exists.");
                 keyboard.nextLine();
-           //     writeMenu();
+
             }
         }
 
 
     public void addResult2(Participant p) {
-
 
 
         System.out.print("Enter event: ");
@@ -321,7 +310,6 @@ public class Main {
 
                     System.out.print("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
                             + " in the event " + e.getEventName() + ": ");
-
 
 
                     double result = keyboard.nextDouble();
@@ -343,15 +331,13 @@ public class Main {
                 }
                 else {
                     System.out.print("To many tries!");
-              //      writeMenu();
+
                 }
             } else {
                 System.out.println("No event called " + enterEventName + " exists.");
-            //    writeMenu();
+
             }
-
         }
-
     }
 
     private void resultParticipant() {
@@ -370,13 +356,11 @@ public class Main {
 
            for (ResultList rl : p.getResults()) {
 
-               
+
 
                 s += rl.getEvent().getEventName() + rl.getResult().getResultat() +", ";
                    //   System.out.println("Result for " + p.getFirstName() + " " + p.getLastName() + " " + " in "
                     //           + rl.getEvent().getEventName() + " is " + rl.getResult().getResultat());
-
-
 
 
            }
@@ -403,13 +387,10 @@ public class Main {
 
     }
 
-    private void resultEvent() {
-        System.out.println("Result list for event.");
+    private void resultEvent(String command) {
+        System.out.println("Result list for event:");
 
-
-        System.out.print("Type event: ");
-
-        String event = keyboard.nextLine();
+        String event = command;
         final Event e = getEvent(event);
 
 
@@ -589,7 +570,6 @@ public class Main {
         while (eventArrayList.size() > 0) {
             eventArrayList.clear();
         }
-      //  writeMenu();
     }
 
     private void exit() {

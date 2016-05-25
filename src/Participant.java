@@ -14,7 +14,7 @@ public class Participant {
     private String teamName;
     private int id;
     private ArrayList<ResultList> results = new ArrayList<ResultList>();
-    private Team team;
+
 
 
     public Participant(String firstName, String lastName, String teamName, int id) {

@@ -3,8 +3,6 @@
  */
 //rodi0231_sisc7379_arho2993
 
-import java.util.ArrayList;
-import java.util.ArrayList;
 public class Event {
 
     private String eventName;
