@@ -1,0 +1,52 @@
+private void listResultsByParticipantAndEvent(Participant achievee, Event eventAchievedIn) {
+
+		try {
+
+			ArrayList<Result> results = idrottsTavling.getResultsByParticipantAndEvent(achievee, eventAchievedIn);
+
+			System.out.printf("Results for %s from %s in %s: ",
+							  achievee.getFullName(),
+							  achievee.getTeamName(),
+							  eventAchievedIn.getName());
+
+			for(Result result : results) {
+
+				System.out.print(result + ", ");
+
+			}
+
+			System.out.println();
+
+		} catch(NullPointerException e) {
+
+				System.out.println("No participant with number " + achievee.getStartNumber() + ".");
+
+		}
+
+	}
+
+	private void listResultsByParticipant() {
+
+		Participant achievee = getParticipant();
+
+		if(achievee == null) {
+
+			System.out.println("No participant with number " + inputHandler.getLastInt() + ".");
+			return;
+
+		}
+
+		ArrayList<Event> allEvents = idrottsTavling.getEvents();
+
+		if(allEvents.size() == 0) {
+
+			System.out.println("There are no events registered.");
+			return;
+
+		}
+
+		for(Event event : allEvents) {
+
+			listResultsByParticipantAndEvent(achievee, event);
+
+		}

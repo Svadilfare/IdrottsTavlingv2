@@ -109,34 +109,34 @@ public class Main {
 
     private void addEvent() {
 
-            System.out.print("Enter name of event: ");
-            String eventName = "";
-            while (eventName.isEmpty() || getEvent(eventName) != null) {
-                eventName = keyboard.nextLine();
-                eventName = eventName.trim();
-                if (eventName.isEmpty()) {
-                    System.out.print("Names can't be empty, write something: ");
-                } else if (getEvent(eventName) != null) {
-                    System.out.print("Duplicate event name, write something else: ");
-                }
-
-            }
-            eventName = eventName.toLowerCase();
-            char[] name = eventName.toCharArray();
-            name[0] = ("" + (name[0])).toUpperCase().charAt(0);
-            eventName = new String(name);
-
-            System.out.print("Attempts allowed: ");
-            int attemptsAllowed = keyboard.nextInt();
-
-            while (attemptsAllowed <= 0){
-                System.out.print("Number to small, write something else: ");
-                attemptsAllowed = keyboard.nextInt();
+        System.out.print("Enter name of event: ");
+        String eventName = "";
+        while (eventName.isEmpty() || getEvent(eventName) != null) {
+            eventName = keyboard.nextLine();
+            eventName = eventName.trim();
+            if (eventName.isEmpty()) {
+                System.out.print("Names can't be empty, write something: ");
+            } else if (getEvent(eventName) != null) {
+                System.out.print("Duplicate event name, write something else: ");
             }
 
-            keyboard.nextLine();
+        }
+        eventName = eventName.toLowerCase();
+        char[] name = eventName.toCharArray();
+        name[0] = ("" + (name[0])).toUpperCase().charAt(0);
+        eventName = new String(name);
 
-            System.out.print("Bigger better? (yes/no): ");
+        System.out.print("Attempts allowed: ");
+        int attemptsAllowed = keyboard.nextInt();
+
+        while (attemptsAllowed <= 0){
+            System.out.print("Number to small, write something else: ");
+            attemptsAllowed = keyboard.nextInt();
+        }
+
+        keyboard.nextLine();
+
+        System.out.print("Bigger better? (yes/no): ");
 
 
         boolean biggerBetter = false;
@@ -159,13 +159,13 @@ public class Main {
             }
         }
 
-            eventName = eventName.trim().substring(0,1).toUpperCase() + eventName.substring(1).toLowerCase();
+        eventName = eventName.trim().substring(0,1).toUpperCase() + eventName.substring(1).toLowerCase();
 
 
-            Event e = new Event(eventName, attemptsAllowed, biggerBetter);
-            eventArrayList.add(e);
+        Event e = new Event(eventName, attemptsAllowed, biggerBetter);
+        eventArrayList.add(e);
 
-            System.out.println(e.getEventName() + " has been added.");
+        System.out.println(e.getEventName() + " has been added.");
 
     }
 
@@ -273,19 +273,19 @@ public class Main {
         boolean participantFound = false;
 
 
-            for (int x = 0; x < participantArrayList.size(); x++) {
-                if (participantArrayList.get(x).getId() == (writtenId)) {
+        for (int x = 0; x < participantArrayList.size(); x++) {
+            if (participantArrayList.get(x).getId() == (writtenId)) {
 
-                    addResult2(participantArrayList.get(x));
-                    participantFound = true;
-                }
-            }
-            if (!participantFound) {
-                System.out.println("No participant with number " + writtenId + " exists.");
-                keyboard.nextLine();
-
+                addResult2(participantArrayList.get(x));
+                participantFound = true;
             }
         }
+        if (!participantFound) {
+            System.out.println("No participant with number " + writtenId + " exists.");
+            keyboard.nextLine();
+
+        }
+    }
 
 
     public void addResult2(Participant p) {
@@ -304,9 +304,9 @@ public class Main {
 
                 Event e = eventArrayList.get(d);
                 eventList.put(p, e);
-                int antalFörsök = e.getAttemptsAllowed();
 
-                if (antalFörsök > 0) {
+
+                if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
                     System.out.print("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
                             + " in the event " + e.getEventName() + ": ");
@@ -315,14 +315,14 @@ public class Main {
 
                     double result = keyboard.nextDouble();
 
-                    Result r = new Result(result, p, e);
 
                     while (result < 0) {
                         System.out.print("To low value entered, write something else: ");
                         result = keyboard.nextDouble();
                     }
 
-                    p.setResult2(e, r);
+                    Result r = new Result(result, p, e);
+                    p.setResultToList(e, r);
 
                     System.out.println("Result " + result + " in " + e.getEventName() + " has been registred." + r);
                     keyboard.nextLine();
@@ -330,9 +330,9 @@ public class Main {
                     System.out.print(r.getNameOfEventAchievedIn());
 
 
-              //      writeMenu();
+                    //      writeMenu();
 
-                    e.setAttemptsAllowed(e.getAttemptsAllowed()-1);
+
                     System.out.print(e.getAttemptsAllowed());
                 }
                 else {
@@ -355,22 +355,31 @@ public class Main {
         Participant p = getParticipant(keyboard.nextInt());
 
 
-
-        String s = "";
-
         try {
 
-           for (ResultList rl : p.getResults()) {
+            String allResults = "";
+            for (Event  e : eventArrayList) {
 
+                allResults += "Results for " + p + " in ";
 
-
-                s += rl.getEvent().getEventName() + rl.getResult().getResultat() +", ";
-                   //   System.out.println("Result for " + p.getFirstName() + " " + p.getLastName() + " " + " in "
-                    //           + rl.getEvent().getEventName() + " is " + rl.getResult().getResultat());
-
-
-           }
-            System.out.print(s);
+                ArrayList<Double> resultsByEvent = p.getResultsByEvent(e);
+                String resultString = "";
+                if(!resultsByEvent.isEmpty()){
+                    for (Double r : resultsByEvent){
+                        resultString += r;
+                        if(resultsByEvent.indexOf(r) != resultsByEvent.size() -1){
+                            resultString += ", ";
+                        }
+                    }
+                    allResults += e.getEventName() + ": " + resultString + "\n";
+                }
+            }
+            if (allResults.length() == 0){
+                System.out.print("No results found");
+            }
+            else{
+                System.out.print(allResults);
+            }
         }
         catch(NullPointerException e){
             System.out.println("No participant with that ID");
@@ -408,7 +417,7 @@ public class Main {
                     return;
                 }
 
-                else if (resultList.getEvent().getEventName().equalsIgnoreCase(event)) {
+                else{
                     topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
                             resultList.getResult().getResultat(),
                             resultList.getEvent()));
@@ -416,17 +425,29 @@ public class Main {
             }
         }
         Collections.sort(topList, new Comparator<TopListPosition>() {
-            public int compare(TopListPosition obj1, TopListPosition obj2) {
-                if (e.getBiggerBetter())
-                    return (int) (obj2.score - obj1.score);
-                else
-                    return (int) (obj1.score - obj2.score);
-            }
-        }
+                    public int compare(TopListPosition obj1, TopListPosition obj2) {
+                        if (e.getBiggerBetter())
+                            return (int) (obj2.score - obj1.score);
+                        else
+                            return (int) (obj1.score - obj2.score);
+                    }
+                }
         );
-        int i = 1;
-        for (TopListPosition topListPosition : topList) {
-            System.out.println((i++) + " " + topListPosition.score  + " " + topListPosition.name);
+        int placement = 1;
+        TopListPosition previousPosition = null;
+//        for (TopListPosition topListPosition : topList) {
+        for (int i = 0; i < topList.size(); i++) {
+            TopListPosition currentPosition = topList.get(i);
+            if (previousPosition != null) {
+                if(currentPosition.score != previousPosition.score){
+                    placement = i;
+                    placement++;
+                }
+            }
+            previousPosition = currentPosition;
+
+            System.out.println((placement) + " " + currentPosition.score  + " " + currentPosition.name);
+
         }
 
     }
@@ -528,7 +549,7 @@ public class Main {
 
     private void message(String message) {
 
-         message = message.replaceFirst("message", "");
+        message = message.replaceFirst("message", "");
 
         if (message.length() > 56) {
             message = message.substring(0, 56);

@@ -31,7 +31,7 @@ public class Result {
     }
 
     public String toString(){
-        return result + " " +participant + " " + event;
+        return result + "";
     }
 
     public String getNameOfEventAchievedIn() {

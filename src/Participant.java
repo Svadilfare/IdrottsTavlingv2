@@ -77,6 +77,27 @@ public class Participant {
         this.setResults(tmpList);
     }
 
+    public void setResultToList(Event event, Result result){
+
+        results.add(new ResultList(event, result));
+
+
+    }
+
+    public ArrayList<Double> getResultsByEvent(Event event){
+
+        ArrayList<Double> gatheredResults = new ArrayList<>();
+        for (ResultList r : results){
+            if(event.getEventName().equalsIgnoreCase(r.getEvent().getEventName())) {
+                gatheredResults.add(r.getResult().getResultat());
+
+            }
+
+        }
+
+        return gatheredResults;
+    }
+
 
     public void countDownAttempts(Event e){
 
@@ -86,8 +107,14 @@ public class Participant {
         return firstName;
     }
 
-    public int reduceAttempts (Event e){
-        return e.getAttemptsAllowed();
+    public int getAmountOfAttempts (Event e){
+        int counter = 0;
+        for(ResultList r : results){
+            if (e.getEventName().equalsIgnoreCase(r.getEvent().getEventName())){
+                counter++;
+            }
+        }
+        return counter;
     }
 
     public ArrayList<ResultList> getResults() {
