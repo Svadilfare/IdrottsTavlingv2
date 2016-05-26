@@ -38,6 +38,12 @@ public class Event {
     public boolean getBiggerBetter() {
         return biggerBetter;
     }
+
+    public String toString(){
+        return attemptsAllowed + "";
+    }
+
+
 }
 
 

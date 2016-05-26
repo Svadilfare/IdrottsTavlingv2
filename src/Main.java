@@ -159,9 +159,6 @@ public class Main {
             }
         }
 
-        //    boolean biggerBetter = keyboard.nextLine().equalsIgnoreCase("yes") ||
-        //            keyboard.nextLine().equalsIgnoreCase("y") ? true : false;
-
             eventName = eventName.trim().substring(0,1).toUpperCase() + eventName.substring(1).toLowerCase();
 
 
@@ -299,11 +296,14 @@ public class Main {
         String enterEventName = keyboard.nextLine();
         boolean eventFound = false;
 
+        Map<Participant, Event> eventList = new HashMap<>();
+
         for (int d = 0; d < eventArrayList.size(); d++) {
 
             if (eventArrayList.get(d).getEventName().equalsIgnoreCase(enterEventName)) {
 
                 Event e = eventArrayList.get(d);
+                eventList.put(p, e);
                 int antalFörsök = e.getAttemptsAllowed();
 
                 if (antalFörsök > 0) {
@@ -312,18 +312,24 @@ public class Main {
                             + " in the event " + e.getEventName() + ": ");
 
 
+
                     double result = keyboard.nextDouble();
+
+                    Result r = new Result(result, p, e);
 
                     while (result < 0) {
                         System.out.print("To low value entered, write something else: ");
                         result = keyboard.nextDouble();
                     }
 
-                    p.setResult(e, result);
+                    p.setResult2(e, r);
 
-                    System.out.println("Result " + result + " in " + e.getEventName() + " has been registred.");
+                    System.out.println("Result " + result + " in " + e.getEventName() + " has been registred." + r);
                     keyboard.nextLine();
-                    antalFörsök--;
+
+                    System.out.print(r.getNameOfEventAchievedIn());
+
+
               //      writeMenu();
 
                     e.setAttemptsAllowed(e.getAttemptsAllowed()-1);
@@ -348,7 +354,7 @@ public class Main {
 
         Participant p = getParticipant(keyboard.nextInt());
 
-        Map<Participant, ResultList> resultList = new HashMap<>();
+
 
         String s = "";
 
@@ -388,7 +394,7 @@ public class Main {
     }
 
     private void resultEvent(String command) {
-        System.out.println("Result list for event:");
+        System.out.println("Results for " + command + ":");
 
         String event = command;
         final Event e = getEvent(event);
@@ -420,7 +426,7 @@ public class Main {
         );
         int i = 1;
         for (TopListPosition topListPosition : topList) {
-            System.out.println((i++) + ". Result for: " + topListPosition.name + " " + topListPosition.score);
+            System.out.println((i++) + " " + topListPosition.score  + " " + topListPosition.name);
         }
 
     }

@@ -63,6 +63,29 @@ public class Participant {
         this.setResults(tmpList);
     }
 
+
+    public void setResult2(Event e, Result result){
+
+        ArrayList<ResultList> tmpList = this.getResults();
+
+        Result r = new Result(result.getResultat());
+
+        ResultList rl = new ResultList(e,r);
+
+        tmpList.add(rl);
+
+        this.setResults(tmpList);
+    }
+
+
+    public void countDownAttempts(Event e){
+
+    }
+
+    public String toString(){
+        return firstName;
+    }
+
     public int reduceAttempts (Event e){
         return e.getAttemptsAllowed();
     }
