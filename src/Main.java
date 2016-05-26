@@ -399,8 +399,6 @@ public class Main {
             this.score = score;
             this.event = event;
         }
-
-
     }
 
     private void resultEvent(String command) {
