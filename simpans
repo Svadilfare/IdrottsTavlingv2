@@ -1,52 +1,56 @@
-private void listResultsByParticipantAndEvent(Participant achievee, Event eventAchievedIn) {
-
-		try {
-
-			ArrayList<Result> results = idrottsTavling.getResultsByParticipantAndEvent(achievee, eventAchievedIn);
-
-			System.out.printf("Results for %s from %s in %s: ",
-							  achievee.getFullName(),
-							  achievee.getTeamName(),
-							  eventAchievedIn.getName());
-
-			for(Result result : results) {
-
-				System.out.print(result + ", ");
-
-			}
-
-			System.out.println();
-
-		} catch(NullPointerException e) {
-
-				System.out.println("No participant with number " + achievee.getStartNumber() + ".");
-
-		}
-
-	}
-
-	private void listResultsByParticipant() {
-
-		Participant achievee = getParticipant();
-
-		if(achievee == null) {
-
-			System.out.println("No participant with number " + inputHandler.getLastInt() + ".");
-			return;
-
-		}
-
-		ArrayList<Event> allEvents = idrottsTavling.getEvents();
-
-		if(allEvents.size() == 0) {
-
-			System.out.println("There are no events registered.");
-			return;
-
-		}
-
-		for(Event event : allEvents) {
-
-			listResultsByParticipantAndEvent(achievee, event);
-
-		}
+add event
+long jump
+3
+y
+add event
+Marathon
+1
+no
+add participant
+Ada
+Lovelace
+Computing
+add participant
+Alan
+Turing
+Computing
+participant
+101
+long jump
+Marathon
+teams
+add result
+100
+long jump
+6,4
+add result
+101
+Marathon
+2,48
+add result
+100
+Marathon
+2,5
+add result
+101
+long jump
+6,5
+add result
+100
+long jump
+6,93
+add result
+101
+long jump
+6,75
+add result
+101
+long jump
+0,0
+participant
+100
+participant
+101
+long jump
+Marathon
+teams

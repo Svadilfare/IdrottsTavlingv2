@@ -305,16 +305,12 @@ public class Main {
                 Event e = eventArrayList.get(d);
                 eventList.put(p, e);
 
-
                 if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
                     System.out.print("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
                             + " in the event " + e.getEventName() + ": ");
 
-
-
                     double result = keyboard.nextDouble();
-
 
                     while (result < 0) {
                         System.out.print("To low value entered, write something else: ");
@@ -326,22 +322,13 @@ public class Main {
 
                     System.out.println("Result " + result + " in " + e.getEventName() + " has been registred." + r);
                     keyboard.nextLine();
-
-                    System.out.print(r.getNameOfEventAchievedIn());
-
-
-                    //      writeMenu();
-
-
-                    System.out.print(e.getAttemptsAllowed());
+//                    System.out.print(r.getNameOfEventAchievedIn());
                 }
                 else {
                     System.out.print("To many tries!");
-
                 }
             } else {
                 System.out.println("No event called " + enterEventName + " exists.");
-
             }
         }
     }
@@ -407,15 +394,14 @@ public class Main {
         String event = command;
         final Event e = getEvent(event);
 
-
         List<TopListPosition> topList = new ArrayList<TopListPosition>();
         for (Participant participant : this.participantArrayList) {
             for (ResultList resultList : participant.getResults()) {
                 if (!resultList.getEvent().getEventName().equalsIgnoreCase(event)){
                     System.out.println("No event with that name or no results found.");
-                    return;
+//                    System.out.print(resultList.getEvent().getEventName() + event); //test för att se vad som söks
+//                    return;
                 }
-
                 else{
                     topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
                             resultList.getResult().getResultat(),
