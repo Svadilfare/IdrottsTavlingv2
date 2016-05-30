@@ -18,6 +18,7 @@ public class Main {
     ArrayList<Event> eventArrayList = new ArrayList<>();
     ArrayList<Result> resultArrayList = new ArrayList<>();
     ArrayList<Participant> participantArrayList = new ArrayList<>();
+    private int id = 99;
 
     public String readString(String prompt) {
         System.out.print("> " + prompt);
@@ -188,7 +189,7 @@ public class Main {
         firstName = firstName.trim().substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
         lastName = lastName.trim().substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
         teamName = teamName.trim().substring(0,1).toUpperCase() + teamName.substring(1).toLowerCase();
-        int id = 99;
+//        int id = 99;
 
         Participant p = new Participant(firstName, lastName, teamName, id);
         participantArrayList.add(p);
@@ -494,16 +495,16 @@ public class Main {
     private void reinitialize() {
 
         String message = " ALL DATA HAS BEEN REMOVED";
-
+        Participant.reinitializeID();
         char fill = ' ';
 
         String toPad = "#";
-        String specialare = new String(new char[toPad.length() + 57 - message.length()]).replace('\0', fill) + toPad;
+        String specialInLine = new String(new char[toPad.length() + 57 - message.length()]).replace('\0', fill) + toPad;
         System.out.println("");
         System.out.println("############################################################");
         System.out.println("#                                                          #");
         System.out.print("#" + message);
-        System.out.println(specialare);
+        System.out.println(specialInLine);
         System.out.println("#                                                      	   #");
         System.out.println("############################################################");
 

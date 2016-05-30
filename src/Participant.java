@@ -46,8 +46,13 @@ public class Participant {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
+
     public int getId() {
         return id;
+    }
+
+    public static void reinitializeID(){
+        next_id = 99;
     }
 
     public void setResult(Event e, double score){
