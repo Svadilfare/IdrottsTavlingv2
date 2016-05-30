@@ -27,8 +27,4 @@ public class Team {
     public void setParticipants(ArrayList<Participant> participants) {
         this.participants = participants;
     }
-
-
-
-
 }

@@ -15,30 +15,35 @@ import java.util.Map.Entry;
 public class Main {
 
     private Scanner keyboard = new Scanner(System.in);
+    ArrayList<Event> eventArrayList = new ArrayList<>();
+    ArrayList<Result> resultArrayList = new ArrayList<>();
+    ArrayList<Participant> participantArrayList = new ArrayList<>();
 
-    ArrayList<Event> eventArrayList = new ArrayList<Event>();
-    ArrayList<Result> resultArrayList = new ArrayList<Result>();
-    ArrayList<Participant> participantArrayList = new ArrayList<Participant>();
-
-    public String readText(String prompt) {
-        System.out.print(prompt);
+    public String readString(String prompt) {
+        System.out.print("> " + prompt);
         return keyboard.nextLine();
     }
 
-    public int readNumber(String prompt) {
+    public int readInt(String prompt) {
         System.out.print(prompt);
         int number = keyboard.nextInt();
         keyboard.nextLine();
         return number;
     }
 
+    public double readDouble(String prompt) {
+        System.out.print(prompt);
+        double number = keyboard.nextDouble();
+        keyboard.nextLine();
+        return number;
+    }
+
     private String readCommand() {
-        return readText("Command: ").toLowerCase();
+        return readString("Command: ").toLowerCase();
     }
 
     private void initiate() {
         System.out.println("Welcome");
-
     }
 
     private void writeMenu() {
@@ -56,21 +61,14 @@ public class Main {
 
     private void manageCommand(String command) {
 
-
-
-
         if (command.matches("message.+")) {
-
             message(command);
         }
-
-        else if (returnEvents().toLowerCase().indexOf(command.toLowerCase()) != -1){
+        else if (getEvent(command) != null){
             resultEvent(command);
         }
 
-
         else {
-
             switch (command) {
                 case "add event":
                     addEvent();
@@ -137,15 +135,11 @@ public class Main {
         keyboard.nextLine();
 
         System.out.print("Bigger better? (yes/no): ");
-
-
         boolean biggerBetter = false;
         boolean biggerBetterOptionDone = false;
-
         String biggerBetterString = keyboard.nextLine();
 
         while(!biggerBetterOptionDone) {
-
 
             if (biggerBetterString.equalsIgnoreCase("yes") || biggerBetterString.equalsIgnoreCase("y")) {
                 biggerBetter = true;
@@ -160,21 +154,16 @@ public class Main {
         }
 
         eventName = eventName.trim().substring(0,1).toUpperCase() + eventName.substring(1).toLowerCase();
-
-
         Event e = new Event(eventName, attemptsAllowed, biggerBetter);
         eventArrayList.add(e);
 
         System.out.println(e.getEventName() + " has been added.");
-
     }
 
     private void addParticipant() {
 
-
         System.out.print("Enter participants first name: ");
         String firstName = keyboard.nextLine();
-
         firstName = firstName.trim();
 
         while (firstName.equals("")) {
@@ -183,12 +172,10 @@ public class Main {
             System.out.print("Enter participants first name: ");
             firstName = keyboard.nextLine();
             firstName = firstName.trim();
-
         }
 
         System.out.print("Enter participants last name: ");
         String lastName = keyboard.nextLine();
-
         lastName = lastName.trim();
 
         while (lastName.equals("")) {
@@ -197,23 +184,18 @@ public class Main {
             System.out.print("Enter participants last name: ");
             lastName = keyboard.nextLine();
             lastName = lastName.trim();
-
         }
 
         System.out.print("Enter participants team: ");
         String teamName = keyboard.nextLine();
-
         teamName = teamName.trim();
-
 
         while (teamName.equals("")) {
             System.out.println("Names can't be empty!");
 
             System.out.print("Enter participants team: ");
             teamName = keyboard.nextLine();
-
             teamName = teamName.trim();
-
         }
 
         firstName = firstName.trim().substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
@@ -226,23 +208,11 @@ public class Main {
 
         System.out.println(p.getFirstName() + " " + p.getLastName() + " from "
                 + p.getTeamName() + " with number " + p.getId() + " has been added.");
-
-
-    }
-
-    public String returnEvents(){
-        String events = "";
-        for (Event e : eventArrayList){
-            events += e.getEventName().toLowerCase();
-        }
-        return events;
     }
 
     private void removeParticipant() {
 
-        System.out.print("Enter ID on participant you would like to remove: ");
-        int enterID = keyboard.nextInt();
-        keyboard.nextLine();
+        int enterID = readInt("Enter ID on participant you would like to remove: ");
 
         boolean participantFound = false;
 
@@ -290,48 +260,39 @@ public class Main {
 
     public void addResult2(Participant p) {
 
-
         System.out.print("Enter event: ");
         keyboard.nextLine();
         String enterEventName = keyboard.nextLine();
-        boolean eventFound = false;
 
-        Map<Participant, Event> eventList = new HashMap<>();
+        Event e = getEvent(enterEventName);
+        if (e == null){
+            System.out.println("No event called " + enterEventName + " exists.");
+            return;
+        }
 
-        for (int d = 0; d < eventArrayList.size(); d++) {
+        if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
-            if (eventArrayList.get(d).getEventName().equalsIgnoreCase(enterEventName)) {
+            System.out.print("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
+                    + " in the event " + e.getEventName() + ": ");
 
-                Event e = eventArrayList.get(d);
-                eventList.put(p, e);
+            double result = keyboard.nextDouble();
 
-                if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
-
-                    System.out.print("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
-                            + " in the event " + e.getEventName() + ": ");
-
-                    double result = keyboard.nextDouble();
-
-                    while (result < 0) {
-                        System.out.print("To low value entered, write something else: ");
-                        result = keyboard.nextDouble();
-                    }
-
-                    Result r = new Result(result, p, e);
-                    p.setResultToList(e, r);
-
-                    System.out.println("Result " + result + " in " + e.getEventName() + " has been registred." + r);
-                    keyboard.nextLine();
-//                    System.out.print(r.getNameOfEventAchievedIn());
-                }
-                else {
-                    System.out.print("To many tries!");
-                }
-            } else {
-                System.out.println("No event called " + enterEventName + " exists.");
+            while (result < 0) {
+                System.out.print("To low value entered, write something else: ");
+                result = keyboard.nextDouble();
             }
+
+            Result r = new Result(result, p, e);
+            p.setResultToList(e, r);
+
+            System.out.println("Result " + result + " in " + e.getEventName() + " has been registred.");
+            keyboard.nextLine();
+        }
+        else {
+            System.out.println("To many tries!");
         }
     }
+
 
     private void resultParticipant() {
 
@@ -340,7 +301,6 @@ public class Main {
         System.out.print("Type in the ID number: ");
 
         Participant p = getParticipant(keyboard.nextInt());
-
 
         try {
 
@@ -392,15 +352,15 @@ public class Main {
         System.out.println("Results for " + command + ":");
 
         String event = command;
-        final Event e = getEvent(event);
+        Event e = getEvent(event);
 
         List<TopListPosition> topList = new ArrayList<TopListPosition>();
         for (Participant participant : this.participantArrayList) {
-            for (ResultList resultList : participant.getResults()) {
-                if (!resultList.getEvent().getEventName().equalsIgnoreCase(event)){
+            ArrayList<ResultList> participantsResults = participant.getResultListByEvent(e);
+            for (ResultList resultList : participant.getResultListByEvent(e)) {
+                if (participantsResults.isEmpty()){
                     System.out.println("No event with that name or no results found.");
-//                    System.out.print(resultList.getEvent().getEventName() + event); //test för att se vad som söks
-//                    return;
+
                 }
                 else{
                     topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
@@ -420,7 +380,6 @@ public class Main {
         );
         int placement = 1;
         TopListPosition previousPosition = null;
-//        for (TopListPosition topListPosition : topList) {
         for (int i = 0; i < topList.size(); i++) {
             TopListPosition currentPosition = topList.get(i);
             if (previousPosition != null) {
@@ -596,6 +555,7 @@ public class Main {
             manageCommand(command);
         }
     }
+
     private Participant getParticipant(int id) {
         for (Participant p : participantArrayList) {
             if (p.getId() == id) {
@@ -604,6 +564,7 @@ public class Main {
         }
         return null;
     }
+
     private Event getEvent (String eventName){
         for (Event e : eventArrayList){
             if (e.getEventName().equalsIgnoreCase(eventName)){
@@ -612,6 +573,7 @@ public class Main {
         }
         return null;
     }
+
     public static void main(String[] args) {
         Main competition = new Main();
         competition.initiate();

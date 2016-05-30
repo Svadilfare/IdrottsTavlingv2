@@ -98,6 +98,19 @@ public class Participant {
         return gatheredResults;
     }
 
+    public ArrayList<ResultList> getResultListByEvent(Event event) {
+
+        ArrayList<ResultList> gatheredEvents = new ArrayList<>();
+
+            for (ResultList rl : results) {
+
+                if ((event.getEventName().equalsIgnoreCase(rl.getEvent().getEventName()))) {
+                    gatheredEvents.add(rl);
+                }
+            }
+
+        return gatheredEvents;
+    }
 
     public void countDownAttempts(Event e){
 
@@ -116,6 +129,8 @@ public class Participant {
         }
         return counter;
     }
+
+
 
     public ArrayList<ResultList> getResults() {
         return results;
