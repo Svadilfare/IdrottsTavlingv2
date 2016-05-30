@@ -279,9 +279,8 @@ public class Main {
         try {
 
             String allResults = "";
-            for (Event  e : eventArrayList) {
+            for (Event e : eventArrayList) {
 
-                allResults += "Results for " + p + " in ";
 
                 ArrayList<Double> resultsByEvent = p.getResultsByEvent(e);
                 String resultString = "";
@@ -292,7 +291,7 @@ public class Main {
                             resultString += ", ";
                         }
                     }
-                    allResults += e.getEventName() + ": " + resultString + "\n";
+                    allResults += "Results for " + p + " in " + e.getEventName() + ": " + resultString + "\n";
                 }
             }
             if (allResults.length() == 0){
@@ -419,48 +418,53 @@ public class Main {
     }
 
     private void resultTeam() {
-        Map<String, TeamMedals> teams = new HashMap<>();
-        for (Participant participant : this.participantArrayList) {
-            for (Event event : this.eventArrayList) {
-                Integer position = this.getPosition(participant, event);
-                if (position != null) {
-                    TeamMedals teamMedals = teams.get(participant.getTeamName());
-                    if (teamMedals == null) {
-                        teamMedals = new TeamMedals(0, 0, 0);
-                        teams.put(participant.getTeamName(), teamMedals);
-                    }
-                    if (position == 1) {
-                        teamMedals.firstPlace++;
-                    } else if (position == 2) {
-                        teamMedals.secondPlace++;
-                    } else if (position == 3) {
-                        teamMedals.thirdPlace++;
+        if (participantArrayList.isEmpty()) {
+            System.out.println("No teams available");
+
+        } else {
+            Map<String, TeamMedals> teams = new HashMap<>();
+            for (Participant participant : this.participantArrayList) {
+                for (Event event : this.eventArrayList) {
+                    Integer position = this.getPosition(participant, event);
+                    if (position != null) {
+                        TeamMedals teamMedals = teams.get(participant.getTeamName());
+                        if (teamMedals == null) {
+                            teamMedals = new TeamMedals(0, 0, 0);
+                            teams.put(participant.getTeamName(), teamMedals);
+                        }
+                        if (position == 1) {
+                            teamMedals.firstPlace++;
+                        } else if (position == 2) {
+                            teamMedals.secondPlace++;
+                        } else if (position == 3) {
+                            teamMedals.thirdPlace++;
+                        }
                     }
                 }
             }
-        }
-        List<TeamResult> teamResults = new ArrayList<>();
-        for (Entry<String, TeamMedals> entry : teams.entrySet()) {
-            teamResults.add(new TeamResult(entry.getValue(), entry.getKey()));
-        }
-        Collections.sort(teamResults, new Comparator<TeamResult>() {
-            public int compare(TeamResult obj1, TeamResult obj2) {
-                if (obj1.teamMedals.firstPlace != obj2.teamMedals.firstPlace) {
-                    return obj2.teamMedals.firstPlace - obj1.teamMedals.firstPlace;
-                }
-                if (obj1.teamMedals.secondPlace != obj2.teamMedals.secondPlace) {
-                    return obj2.teamMedals.secondPlace - obj1.teamMedals.secondPlace;
-                }
-                return obj2.teamMedals.thirdPlace - obj1.teamMedals.thirdPlace;
+            List<TeamResult> teamResults = new ArrayList<>();
+            for (Entry<String, TeamMedals> entry : teams.entrySet()) {
+                teamResults.add(new TeamResult(entry.getValue(), entry.getKey()));
             }
-        });
-        System.out.println("1st    2nd     3rd    Team name");
-        System.out.println("*******************************");
-        for (TeamResult teamResult : teamResults) {
-            System.out.println(teamResult.teamMedals.firstPlace + "    " +
-                    teamResult.teamMedals.secondPlace + "       " +
-                    teamResult.teamMedals.thirdPlace + "      " +
-                    teamResult.team);
+            Collections.sort(teamResults, new Comparator<TeamResult>() {
+                public int compare(TeamResult obj1, TeamResult obj2) {
+                    if (obj1.teamMedals.firstPlace != obj2.teamMedals.firstPlace) {
+                        return obj2.teamMedals.firstPlace - obj1.teamMedals.firstPlace;
+                    }
+                    if (obj1.teamMedals.secondPlace != obj2.teamMedals.secondPlace) {
+                        return obj2.teamMedals.secondPlace - obj1.teamMedals.secondPlace;
+                    }
+                    return obj2.teamMedals.thirdPlace - obj1.teamMedals.thirdPlace;
+                }
+            });
+            System.out.println("1st    2nd     3rd    Team name");
+            System.out.println("*******************************");
+            for (TeamResult teamResult : teamResults) {
+                System.out.println(teamResult.teamMedals.firstPlace + "    " +
+                        teamResult.teamMedals.secondPlace + "       " +
+                        teamResult.teamMedals.thirdPlace + "      " +
+                        teamResult.team);
+            }
         }
     }
 
