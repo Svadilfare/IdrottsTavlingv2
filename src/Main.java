@@ -80,7 +80,7 @@ public class Main {
                     removeParticipant();
                     break;
                 case "add result":
-                    addResult();
+                    addResultParticipant();
                     break;
                 case "participant":
                     resultParticipant();
@@ -107,15 +107,14 @@ public class Main {
 
     private void addEvent() {
 
-        System.out.print("Enter name of event: ");
         String eventName = "";
         while (eventName.isEmpty() || getEvent(eventName) != null) {
-            eventName = keyboard.nextLine();
+            eventName = readString("Enter name of event: ");
             eventName = eventName.trim();
             if (eventName.isEmpty()) {
-                System.out.print("Names can't be empty, write something: ");
+                System.out.println("Names can't be empty!");
             } else if (getEvent(eventName) != null) {
-                System.out.print("Duplicate event name, write something else: ");
+                System.out.println("Duplicate event name!");
             }
 
         }
@@ -124,20 +123,15 @@ public class Main {
         name[0] = ("" + (name[0])).toUpperCase().charAt(0);
         eventName = new String(name);
 
-        System.out.print("Attempts allowed: ");
-        int attemptsAllowed = keyboard.nextInt();
+        int attemptsAllowed = readInt("Attempts allowed: ");
 
         while (attemptsAllowed <= 0){
-            System.out.print("Number to small, write something else: ");
-            attemptsAllowed = keyboard.nextInt();
+            attemptsAllowed = readInt("Number to small, write something else: ");
         }
 
-        keyboard.nextLine();
-
-        System.out.print("Bigger better? (yes/no): ");
+        String biggerBetterString = readString("Bigger better? (yes/no): ");
         boolean biggerBetter = false;
         boolean biggerBetterOptionDone = false;
-        String biggerBetterString = keyboard.nextLine();
 
         while(!biggerBetterOptionDone) {
 
@@ -148,8 +142,7 @@ public class Main {
                 biggerBetter = false;
                 biggerBetterOptionDone = true;
             } else {
-                System.out.print("Wrong insertion, write something else: ");
-                biggerBetterString = keyboard.nextLine();
+                biggerBetterString = readString("Wrong insertion, write something else: ");
             }
         }
 
@@ -162,39 +155,33 @@ public class Main {
 
     private void addParticipant() {
 
-        System.out.print("Enter participants first name: ");
-        String firstName = keyboard.nextLine();
+        String firstName = readString("Enter participants first name: ");
         firstName = firstName.trim();
 
         while (firstName.equals("")) {
             System.out.println("Names can't be empty!");
 
-            System.out.print("Enter participants first name: ");
-            firstName = keyboard.nextLine();
+            firstName = readString("Enter participants first name: ");
             firstName = firstName.trim();
         }
 
-        System.out.print("Enter participants last name: ");
-        String lastName = keyboard.nextLine();
+        String lastName = readString("Enter participants last name: ");
         lastName = lastName.trim();
 
         while (lastName.equals("")) {
             System.out.println("Names can't be empty!");
 
-            System.out.print("Enter participants last name: ");
-            lastName = keyboard.nextLine();
+            lastName = readString("Enter participants last name: ");
             lastName = lastName.trim();
         }
 
-        System.out.print("Enter participants team: ");
-        String teamName = keyboard.nextLine();
+        String teamName = readString("Enter participants team: ");
         teamName = teamName.trim();
 
         while (teamName.equals("")) {
             System.out.println("Names can't be empty!");
 
-            System.out.print("Enter participants team: ");
-            teamName = keyboard.nextLine();
+            teamName = readString("Enter participants team: ");
             teamName = teamName.trim();
         }
 
@@ -222,7 +209,7 @@ public class Main {
 
                 System.out.println(
                         participantArrayList.get(x).getFirstName() + " " + participantArrayList.get(x).getLastName()
-                                + " från " + participantArrayList.get(x).getTeamName() + " with number "
+                                + " from " + participantArrayList.get(x).getTeamName() + " with number "
                                 + participantArrayList.get(x).getId() + " removed");
                 participantArrayList.remove(x);
                 participantFound = true;
@@ -236,33 +223,27 @@ public class Main {
         }
     }
 
-    private void addResult() {
+    private void addResultParticipant() {
 
-        System.out.print("Enter participants ID: ");
-        int writtenId = keyboard.nextInt();
+        int writtenId = readInt("Enter participants ID: ");
         boolean participantFound = false;
 
 
         for (int x = 0; x < participantArrayList.size(); x++) {
             if (participantArrayList.get(x).getId() == (writtenId)) {
-
-                addResult2(participantArrayList.get(x));
+                addResultEvent(participantArrayList.get(x));
                 participantFound = true;
             }
         }
         if (!participantFound) {
             System.out.println("No participant with number " + writtenId + " exists.");
-            keyboard.nextLine();
-
         }
     }
 
 
-    public void addResult2(Participant p) {
+    public void addResultEvent(Participant p) {
 
-        System.out.print("Enter event: ");
-        keyboard.nextLine();
-        String enterEventName = keyboard.nextLine();
+        String enterEventName = readString("Enter event: ");
 
         Event e = getEvent(enterEventName);
         if (e == null){
@@ -272,21 +253,17 @@ public class Main {
 
         if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
-            System.out.print("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
+            double result = readDouble("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
                     + " in the event " + e.getEventName() + ": ");
 
-            double result = keyboard.nextDouble();
-
             while (result < 0) {
-                System.out.print("To low value entered, write something else: ");
-                result = keyboard.nextDouble();
+                result = readDouble("To low value entered, write something else: ");
             }
 
             Result r = new Result(result, p, e);
             p.setResultToList(e, r);
 
             System.out.println("Result " + result + " in " + e.getEventName() + " has been registred.");
-            keyboard.nextLine();
         }
         else {
             System.out.println("To many tries!");
@@ -296,11 +273,8 @@ public class Main {
 
     private void resultParticipant() {
 
-        System.out.println("Resultlist for participants.");
-
-        System.out.print("Type in the ID number: ");
-
-        Participant p = getParticipant(keyboard.nextInt());
+        int participantID = readInt("Resultlist for participants.\nType in the ID number: ");
+        Participant p = getParticipant(participantID);
 
         try {
 
@@ -332,7 +306,6 @@ public class Main {
             System.out.println("No participant with that ID");
 
         }
-        keyboard.nextLine();
     }
 
 
@@ -354,7 +327,7 @@ public class Main {
         String event = command;
         Event e = getEvent(event);
 
-        List<TopListPosition> topList = new ArrayList<TopListPosition>();
+        List<TopListPosition> topList = new ArrayList<>();
         for (Participant participant : this.participantArrayList) {
             ArrayList<ResultList> participantsResults = participant.getResultListByEvent(e);
             for (ResultList resultList : participant.getResultListByEvent(e)) {
@@ -364,7 +337,7 @@ public class Main {
                 }
                 else{
                     topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
-                            resultList.getResult().getResultat(),
+                            resultList.getResult().getResult(),
                             resultList.getEvent()));
                 }
             }
@@ -397,12 +370,12 @@ public class Main {
     }
 
     Integer getPosition(Participant p, Event event) {
-        List<TopListPosition> topList = new ArrayList<TopListPosition>();
+        List<TopListPosition> topList = new ArrayList<>();
         for (Participant participant : this.participantArrayList) {
             for (ResultList resultList : participant.getResults()) {
                 if (resultList.getEvent().getEventName().equalsIgnoreCase(event.getEventName())) {
                     topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
-                            resultList.getResult().getResultat(),
+                            resultList.getResult().getResult(),
                             resultList.getEvent()));
                 }
             }
@@ -466,7 +439,7 @@ public class Main {
                 }
             }
         }
-        List<TeamResult> teamResults = new ArrayList<TeamResult>();
+        List<TeamResult> teamResults = new ArrayList<>();
         for (Entry<String, TeamMedals> entry : teams.entrySet()) {
             teamResults.add(new TeamResult(entry.getValue(), entry.getKey()));
         }
@@ -503,12 +476,12 @@ public class Main {
         char fill = ' ';
 
         String toPad = "#";
-        String specialare = new String(new char[toPad.length() + 56 - message.length()]).replace('\0', fill) + toPad;
+        String specialInLine = new String(new char[toPad.length() + 56 - message.length()]).replace('\0', fill) + toPad;
         System.out.println("");
         System.out.println("############################################################");
         System.out.println("#                                                          #");
         System.out.print("# " + message.toUpperCase());
-        System.out.println(specialare);
+        System.out.println(specialInLine);
         System.out.println("#                                                          #");
         System.out.println("############################################################");
 

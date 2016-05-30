@@ -68,7 +68,7 @@ public class Participant {
 
         ArrayList<ResultList> tmpList = this.getResults();
 
-        Result r = new Result(result.getResultat());
+        Result r = new Result(result.getResult());
 
         ResultList rl = new ResultList(e,r);
 
@@ -89,7 +89,7 @@ public class Participant {
         ArrayList<Double> gatheredResults = new ArrayList<>();
         for (ResultList r : results){
             if(event.getEventName().equalsIgnoreCase(r.getEvent().getEventName())) {
-                gatheredResults.add(r.getResult().getResultat());
+                gatheredResults.add(r.getResult().getResult());
 
             }
 

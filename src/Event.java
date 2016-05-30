@@ -15,18 +15,6 @@ public class Event {
         this.biggerBetter = biggerBetter;
     }
 
-    public void setEventName(String newEventName) {
-        eventName = newEventName;
-    }
-
-    public void setAttemptsAllowed(int newAttemptsAllowed) {
-        attemptsAllowed = newAttemptsAllowed;
-    }
-
-    public void setBiggerBetter(boolean newBiggerBetter) {
-        biggerBetter = newBiggerBetter;
-    }
-
     public String getEventName() {
         return eventName;
     }

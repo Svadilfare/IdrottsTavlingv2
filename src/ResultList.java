@@ -19,18 +19,8 @@ public class ResultList {
         return result;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
-    }
-
     public Event getEvent() {
         return event;
     }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-
 }
 

@@ -21,12 +21,12 @@ public class Result {
 
     }
 
-    public void setResultat(double newResult) {
+    public void setResult(double newResult) {
         result = newResult;
 
     }
 
-    public double getResultat(){
+    public double getResult(){
         return result;
     }
 
@@ -34,10 +34,6 @@ public class Result {
         return result + "";
     }
 
-    public String getNameOfEventAchievedIn() {
-        return event.getEventName();
-
-    }
 }
 
 
