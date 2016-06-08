@@ -119,10 +119,11 @@ public class Main {
             }
 
         }
-        eventName = eventName.toLowerCase();
-        char[] name = eventName.toCharArray();
-        name[0] = ("" + (name[0])).toUpperCase().charAt(0);
-        eventName = new String(name);
+         normalizer(eventName);
+//        eventName = eventName.toLowerCase();
+//        char[] name = eventName.toCharArray();
+//        name[0] = ("" + (name[0])).toUpperCase().charAt(0);
+//        eventName = new String(name);
 
         int attemptsAllowed = readInt("Attempts allowed: ");
 
@@ -152,6 +153,14 @@ public class Main {
         eventArrayList.add(e);
 
         System.out.println(e.getEventName() + " has been added.");
+    }
+
+    private static String normalizer(String s){
+        s = s.toLowerCase();
+        char[] name = s.toCharArray();
+        name[0] = ("" + (name[0])).toUpperCase().charAt(0);
+        s = new String(name);
+        return s;
     }
 
     private void addParticipant() {
@@ -186,9 +195,12 @@ public class Main {
             teamName = teamName.trim();
         }
 
-        firstName = firstName.trim().substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
-        lastName = lastName.trim().substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
-        teamName = teamName.trim().substring(0,1).toUpperCase() + teamName.substring(1).toLowerCase();
+        firstName = normalizer(firstName);
+        lastName = normalizer(lastName);
+        teamName = normalizer(teamName);
+//        firstName = firstName.trim().substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
+//        lastName = lastName.trim().substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
+//        teamName = teamName.trim().substring(0,1).toUpperCase() + teamName.substring(1).toLowerCase();
 //        int id = 99;
 
         Participant p = new Participant(firstName, lastName, teamName, id);
