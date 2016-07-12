@@ -89,12 +89,30 @@ public class Participant {
 
     }
 
+    public Double getBestResult(Event event) {
+
+        if (!getResultsByEvent(event).isEmpty()) {
+
+            double max = Double.MIN_VALUE;
+            for (int i = 0; i < results.size(); i++) {
+                if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() > max) {
+                    max = results.get(i).getResultFromList().getResult();
+                }
+            }
+            return max;
+
+        }
+        else{
+            return -1.0;
+        }
+    }
+
     public ArrayList<Double> getResultsByEvent(Event event){
 
         ArrayList<Double> gatheredResults = new ArrayList<>();
         for (ResultList r : results){
             if(event.getEventName().equalsIgnoreCase(r.getEvent().getEventName())) {
-                gatheredResults.add(r.getResult().getResult());
+                gatheredResults.add(r.getResultFromList().getResult());
 
             }
 
@@ -106,6 +124,10 @@ public class Participant {
     public ArrayList<ResultList> getResultListByEvent(Event event) {
 
         ArrayList<ResultList> gatheredEvents = new ArrayList<>();
+
+            if(results.isEmpty()){
+                return gatheredEvents;
+            }
 
             for (ResultList rl : results) {
 

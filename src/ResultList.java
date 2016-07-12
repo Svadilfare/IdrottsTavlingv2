@@ -15,7 +15,7 @@ public class ResultList {
         this.result = r;
     }
 
-    public Result getResult() {
+    public Result getResultFromList() {
         return result;
     }
 
