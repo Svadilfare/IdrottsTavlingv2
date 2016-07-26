@@ -1,6 +1,3 @@
-/**
- * Created by SimonSchwieler on 2016-04-07.
- */
 //rodi0231_sisc7379_arho2993
 
 import java.util.Scanner;
@@ -53,7 +50,7 @@ public class Main {
         System.out.println(" Add participant");
         System.out.println(" Remove participant");
         System.out.println(" Add result");
-        System.out.println(" Participant");
+        System.out.println(" main.Participant");
         System.out.println(" Teams");
         System.out.println(" Message (followed by your message)");
         System.out.println(" Reinitialize");
@@ -266,7 +263,7 @@ public class Main {
 
         if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
-            double result = readDouble("Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
+            double result = readDouble("main.Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
                     + " in the event " + e.getEventName() + ": ");
 
             while (result < 0) {
@@ -276,7 +273,7 @@ public class Main {
             Result r = new Result(result, p, e);
             p.setResultToList(e, r);
 
-            System.out.println("Result " + result + " in " + e.getEventName() + " has been registred.");
+            System.out.println("main.Result " + result + " in " + e.getEventName() + " has been registred.");
         }
         else {
             System.out.println("To many tries!");
@@ -336,8 +333,8 @@ public class Main {
     private void resultEvent(String command) {
         System.out.println("Results for " + command + ":");
 
-        String event = command;
-        Event e = getEvent(event);
+        final String event = command;
+        final Event e = getEvent(event);
 
         List<TopListPosition> topList = new ArrayList<>();
         for (Participant participant : this.participantArrayList) {
@@ -381,7 +378,7 @@ public class Main {
 
     }
 
-    Integer getPosition(Participant p, Event event) {
+    Integer getPosition(Participant p, final Event event) {
         List<TopListPosition> topList = new ArrayList<>();
         for (Participant participant : this.participantArrayList) {
             for (ResultList resultList : participant.getResults()) {

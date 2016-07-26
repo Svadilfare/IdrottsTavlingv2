@@ -1,7 +1,3 @@
-/**
- * Created by SimonSchwieler on 2016-04-07.
- */
-
 //rodi0231_sisc7379_arho2993
 import java.util.ArrayList;
 
