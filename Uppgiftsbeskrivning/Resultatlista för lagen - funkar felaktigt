@@ -1,0 +1,17 @@
+Resultatlista för lagen
+
+Syntax: teams
+
+En resultatlista för alla deltagande lag skrivs ut. Listan ska innehålla lagnamnet och antalet
+guld, silver och brons för varje lag. Listan ska i första hand vara sorterad på antalet guld, därefter
+antalet silver, brons och slutligen lagnamnet.
+
+
+    Tre lag
+
+    Command> teams
+    1st    2nd    3rd    Team name
+    ************************************
+    2      0      1      Computer
+    1      1      0      Mash
+    0      4      0      Sf

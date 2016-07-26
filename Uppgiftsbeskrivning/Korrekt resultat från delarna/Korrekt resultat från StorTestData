@@ -1,0 +1,164 @@
+Command> teams
+1st    2nd    3rd    Team name
+************************************
+2    0    1    Computer
+1    1    0    Mash
+0    4    0    Sf
+Command> message Resultat för Alan
+
+############################################################
+#                                                          #
+# RESULTAT FÖR ALAN                                        #
+#                                                          #
+############################################################
+
+Command> participant
+Number: 101
+Results for Alan Turing in 100 meters: 14.0
+Command> message Resultat för Ada
+
+############################################################
+#                                                          #
+# RESULTAT FÖR ADA                                         #
+#                                                          #
+############################################################
+
+Command> participant
+Number: 100
+Results for Ada Lovelace in Long jump: 4.0, 7.0, 7.5
+Results for Ada Lovelace in 100 meters: 11.3
+Results for Ada Lovelace in Javelin: 63.0
+Command> message Resultat för Arthur
+
+############################################################
+#                                                          #
+# RESULTAT FÖR ARTHUR                                      #
+#                                                          #
+############################################################
+
+Command> participant
+Number: 102
+Results for Arthur Dent in Long jump: 7.0, 3.0
+Results for Arthur Dent in 100 meters: 15.0
+Results for Arthur Dent in Javelin: 10.0, 20.0, 30.0, 40.0, 25.0, 15.0
+Command> message Resultat för William
+
+############################################################
+#                                                          #
+# RESULTAT FÖR WILLIAM                                     #
+#                                                          #
+############################################################
+
+Command> participant
+Number: 104
+Results for William Mandela in 100 meters: 15.0
+Results for William Mandela in Javelin: 0.0, 83.5, 52.0
+Command> teams
+1st    2nd    3rd    Team name
+************************************
+2    0    1    Computer
+1    1    0    Mash
+0    4    0    Sf
+Command> message Tar bort den första deltagaren i lag Computer, hon har tagit alla medaljer för laget
+
+############################################################
+#                                                          #
+# TAR BORT DEN FÖRSTA DELTAGAREN I LAG COMPUTER, HON HAR T #
+#                                                          #
+############################################################
+
+Command> remove participant
+Number: 100
+Ada Lovelace from Computer with number 100 removed
+Command> teams
+1st    2nd    3rd    Team name
+************************************
+3    1    0    Sf
+2    0    3    Mash
+0    0    0    Computer
+Command> message Tar bort den andra och sista deltagarna i lag Computer
+
+############################################################
+#                                                          #
+# TAR BORT DEN ANDRA OCH SISTA DELTAGARNA I LAG COMPUTER   #
+#                                                          #
+############################################################
+
+Command> remove participant
+Number: 101
+Alan Turing from Computer with number 101 removed
+Command> teams
+1st    2nd    3rd    Team name
+************************************
+3    1    0    Sf
+2    0    3    Mash
+Command> message Resultat för samtliga deltagare individuellt
+
+############################################################
+#                                                          #
+# RESULTAT FÖR SAMTLIGA DELTAGARE INDIVIDUELLT             #
+#                                                          #
+############################################################
+
+Command> participant
+Number: 105
+Results for Hawkeye Pierce in 100 meters: 12.4
+Results for Hawkeye Pierce in Long jump: 4.0, 3.2
+Command> participant
+Number: 102
+Results for Arthur Dent in Long jump: 7.0, 3.0
+Results for Arthur Dent in 100 meters: 15.0
+Results for Arthur Dent in Javelin: 10.0, 20.0, 30.0, 40.0, 25.0, 15.0
+Command> participant
+Number: 101
+No participant with number 101
+Command> participant
+Number: 106
+Results for Spearchucker Jones in Long jump: 5.0
+Results for Spearchucker Jones in Javelin: 75.3, 86.0
+Results for Spearchucker Jones in 100 meters: 13.0
+Command> participant
+Number: 107
+Results for Duke Forrester in Long jump: 6.0
+Results for Duke Forrester in 100 meters: 16.0
+Results for Duke Forrester in Javelin: 58.0, 47.0
+Command> participant
+Number: 104
+Results for William Mandela in 100 meters: 15.0
+Results for William Mandela in Javelin: 0.0, 83.5, 52.0
+Command> participant
+Number: 103
+Results for Tricia Mcmillan in Long jump: 7.0
+Results for Tricia Mcmillan in 100 meters: 12.4
+Command> participant
+Number: 100
+No participant with number 100
+Command> Javelin
+
+Results for Javelin
+1 86,00 Spearchucker Jones
+2 83,50 William Mandela
+3 58,00 Duke Forrester
+4 40,00 Arthur Dent
+Command> 100 meters
+
+Results for 100 meters
+1 12,40 Hawkeye Pierce
+1 12,40 Tricia Mcmillan
+3 13,00 Spearchucker Jones
+4 15,00 William Mandela
+4 15,00 Arthur Dent
+6 16,00 Duke Forrester
+Command> long jump
+
+Results for Long jump
+1 7,00 Arthur Dent
+1 7,00 Tricia Mcmillan
+3 6,00 Duke Forrester
+4 5,00 Spearchucker Jones
+5 4,00 Hawkeye Pierce
+Command> teams
+1st    2nd    3rd    Team name
+************************************
+3    1    0    Sf
+2    0    3    Mash
