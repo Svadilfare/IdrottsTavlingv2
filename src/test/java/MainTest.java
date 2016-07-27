@@ -1,9 +1,13 @@
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.io.EOFException;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -13,6 +17,8 @@ public class MainTest {
     private Main main;
     @Mock
     private ScannerHelper scannerHelper;
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
     @Before
     public void setup() {
@@ -35,7 +41,9 @@ public class MainTest {
 
         main.resultTeam();
 
+        exit.expectSystemExit();
         main.exit();
+
     }
 
     private void addParticipantAndData(int id, double result) {
