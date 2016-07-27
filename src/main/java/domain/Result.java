@@ -1,3 +1,5 @@
+package domain;
+
 //rodi0231_sisc7379_arho2993
 public class Result {
 

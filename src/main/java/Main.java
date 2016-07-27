@@ -1,5 +1,10 @@
 //rodi0231_sisc7379_arho2993
 
+import domain.Event;
+import domain.Participant;
+import domain.Result;
+import domain.ResultList;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,36 +16,25 @@ import java.util.Map.Entry;
 
 public class Main {
 
-    private Scanner keyboard = new Scanner(System.in);
-    ArrayList<Event> eventArrayList = new ArrayList<>();
-    ArrayList<Result> resultArrayList = new ArrayList<>();
-    ArrayList<Participant> participantArrayList = new ArrayList<>();
+    private ScannerHelper scannerHelper;
+    List<Event> eventArrayList = new ArrayList<>();
+    List<Result> resultArrayList = new ArrayList<>();
+    List<Participant> participantArrayList = new ArrayList<>();
     private int id = 99;
 
-    public String readString(String prompt) {
-        System.out.print("> " + prompt);
-        return keyboard.nextLine();
-    }
-
-    public int readInt(String prompt) {
-        System.out.print(prompt);
-        int number = keyboard.nextInt();
-        keyboard.nextLine();
-        return number;
-    }
-
-    public double readDouble(String prompt) {
-        System.out.print(prompt);
-        double number = keyboard.nextDouble();
-        keyboard.nextLine();
-        return number;
+    public static void main(String[] args) {
+        Main competition = new Main();
+        competition.initiate();
+        competition.execute();
+        competition.exit();
     }
 
     private String readCommand() {
-        return readString("Command: ").toLowerCase();
+        return scannerHelper.readString("Command: ").toLowerCase();
     }
 
-    private void initiate() {
+    void initiate() {
+        scannerHelper = new ScannerHelper();
         System.out.println("Welcome");
     }
 
@@ -103,11 +97,11 @@ public class Main {
         }
     }
 
-    private void addEvent() {
+    void addEvent() {
 
         String eventName = "";
         while (eventName.isEmpty() || getEvent(eventName) != null) {
-            eventName = readString("Enter name of event: ");
+            eventName = scannerHelper.readString("Enter name of event: ");
             eventName = eventName.trim();
             if (eventName.isEmpty()) {
                 System.out.println("Names can't be empty!");
@@ -122,13 +116,13 @@ public class Main {
 //        name[0] = ("" + (name[0])).toUpperCase().charAt(0);
 //        eventName = new String(name);
 
-        int attemptsAllowed = readInt("Attempts allowed: ");
+        int attemptsAllowed = scannerHelper.readInt("Attempts allowed: ");
 
         while (attemptsAllowed <= 0){
-            attemptsAllowed = readInt("Number to small, write something else: ");
+            attemptsAllowed = scannerHelper.readInt("Number to small, write something else: ");
         }
 
-        String biggerBetterString = readString("Bigger better? (yes/no): ");
+        String biggerBetterString = scannerHelper.readString("Bigger better? (yes/no): ");
         boolean biggerBetter = false;
         boolean biggerBetterOptionDone = false;
 
@@ -141,7 +135,7 @@ public class Main {
                 biggerBetter = false;
                 biggerBetterOptionDone = true;
             } else {
-                biggerBetterString = readString("Wrong insertion, write something else: ");
+                biggerBetterString = scannerHelper.readString("Wrong insertion, write something else: ");
             }
         }
 
@@ -160,35 +154,35 @@ public class Main {
         return s;
     }
 
-    private void addParticipant() {
+    void addParticipant() {
 
-        String firstName = readString("Enter participants first name: ");
+        String firstName = scannerHelper.readString("Enter participants first name: ");
         firstName = firstName.trim();
 
-        while (firstName.equals("")) {
+        while (firstName.isEmpty()) {
             System.out.println("Names can't be empty!");
 
-            firstName = readString("Enter participants first name: ");
+            firstName = scannerHelper.readString("Enter participants first name: ");
             firstName = firstName.trim();
         }
 
-        String lastName = readString("Enter participants last name: ");
+        String lastName = scannerHelper.readString("Enter participants last name: ");
         lastName = lastName.trim();
 
         while (lastName.equals("")) {
             System.out.println("Names can't be empty!");
 
-            lastName = readString("Enter participants last name: ");
+            lastName = scannerHelper.readString("Enter participants last name: ");
             lastName = lastName.trim();
         }
 
-        String teamName = readString("Enter participants team: ");
+        String teamName = scannerHelper.readString("Enter participants team: ");
         teamName = teamName.trim();
 
         while (teamName.equals("")) {
             System.out.println("Names can't be empty!");
 
-            teamName = readString("Enter participants team: ");
+            teamName = scannerHelper.readString("Enter participants team: ");
             teamName = teamName.trim();
         }
 
@@ -209,7 +203,7 @@ public class Main {
 
     private void removeParticipant() {
 
-        int enterID = readInt("Enter ID on participant you would like to remove: ");
+        int enterID = scannerHelper.readInt("Enter ID on participant you would like to remove: ");
 
         boolean participantFound = false;
 
@@ -233,9 +227,9 @@ public class Main {
         }
     }
 
-    private void addResultParticipant() {
+    void addResultParticipant() {
 
-        int writtenId = readInt("Enter participants ID: ");
+        int writtenId = scannerHelper.readInt("Enter participants ID: ");
         boolean participantFound = false;
 
 
@@ -251,9 +245,9 @@ public class Main {
     }
 
 
-    public void addResultEvent(Participant p) {
+    private void addResultEvent(Participant p) {
 
-        String enterEventName = readString("Enter event: ");
+        String enterEventName = scannerHelper.readString("Enter event: ");
 
         Event e = getEvent(enterEventName);
         if (e == null){
@@ -263,11 +257,11 @@ public class Main {
 
         if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
-            double result = readDouble("main.Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
+            double result = scannerHelper.readDouble("main.Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
                     + " in the event " + e.getEventName() + ": ");
 
             while (result < 0) {
-                result = readDouble("To low value entered, write something else: ");
+                result = scannerHelper.readDouble("To low value entered, write something else: ");
             }
 
             Result r = new Result(result, p, e);
@@ -283,7 +277,7 @@ public class Main {
 
     private void resultParticipant() {
 
-        int participantID = readInt("Resultlist for participants.\nType in the ID number: ");
+        int participantID = scannerHelper.readInt("Resultlist for participants.\nType in the ID number: ");
         Participant p = getParticipant(participantID);
 
         try {
@@ -427,7 +421,7 @@ public class Main {
         }
     }
 
-    private void resultTeam() {
+    void resultTeam() {
         if (participantArrayList.isEmpty()) {
             System.out.println("No teams available");
 
@@ -502,7 +496,6 @@ public class Main {
     }
 
     private void reinitialize() {
-
         String message = " ALL DATA HAS BEEN REMOVED";
         Participant.reinitializeID();
         char fill = ' ';
@@ -530,7 +523,7 @@ public class Main {
         }
     }
 
-    private void exit() {
+    void exit() {
         System.out.println("Good bye!");
         System.exit(0);
     }
@@ -561,11 +554,8 @@ public class Main {
         return null;
     }
 
-    public static void main(String[] args) {
-        Main competition = new Main();
-        competition.initiate();
-        competition.execute();
-        competition.exit();
-    }
 
+    public void setScannerHelper(ScannerHelper scannerHelper) {
+        this.scannerHelper = scannerHelper;
+    }
 }

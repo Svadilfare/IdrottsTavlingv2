@@ -1,4 +1,4 @@
-//rodi0231_sisc7379_arho2993
+package domain;//rodi0231_sisc7379_arho2993
 import java.util.ArrayList;
 
 public class Participant {
