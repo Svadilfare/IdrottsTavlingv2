@@ -1,4 +1,6 @@
 
+import domain.Participant;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,11 +26,18 @@ public class MainTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         main = new Main();
+        Participant.reinitializeID();
         main.setScannerHelper(scannerHelper);
     }
 
+    @After
+    public void teardown() {
+        exit.expectSystemExit();
+        main.exit();
+    }
+
     @Test
-    public void test() {
+    public void test_3_2_1() {
         // Add event
         when(scannerHelper.readString("Enter name of event: ")).thenReturn("event");
         when(scannerHelper.readInt("Attempts allowed: ")).thenReturn(1);
@@ -40,10 +49,36 @@ public class MainTest {
         addParticipantAndData(102, 1.0);
 
         main.resultTeam();
+    }
 
-        exit.expectSystemExit();
-        main.exit();
+    @Test
+    public void test_3_3_1() {
+        // Add event
+        when(scannerHelper.readString("Enter name of event: ")).thenReturn("event");
+        when(scannerHelper.readInt("Attempts allowed: ")).thenReturn(1);
+        when(scannerHelper.readString("Bigger better? (yes/no): ")).thenReturn("yes");
+        main.addEvent();
 
+        addParticipantAndData(100, 3.0);
+        addParticipantAndData(101, 3.0);
+        addParticipantAndData(102, 1.0);
+
+        main.resultTeam();
+    }
+
+    @Test
+    public void test_3_3_3() {
+        // Add event
+        when(scannerHelper.readString("Enter name of event: ")).thenReturn("event");
+        when(scannerHelper.readInt("Attempts allowed: ")).thenReturn(1);
+        when(scannerHelper.readString("Bigger better? (yes/no): ")).thenReturn("yes");
+        main.addEvent();
+
+        addParticipantAndData(100, 3.0);
+        addParticipantAndData(101, 3.0);
+        addParticipantAndData(102, 3.0);
+
+        main.resultTeam();
     }
 
     private void addParticipantAndData(int id, double result) {

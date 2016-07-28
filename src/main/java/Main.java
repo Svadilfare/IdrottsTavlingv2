@@ -5,7 +5,6 @@ import domain.Participant;
 import domain.Result;
 import domain.ResultList;
 
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,7 +32,7 @@ public class Main {
         return scannerHelper.readString("Command: ").toLowerCase();
     }
 
-    void initiate() {
+    private void initiate() {
         scannerHelper = new ScannerHelper();
         System.out.println("Welcome");
     }
@@ -44,7 +43,7 @@ public class Main {
         System.out.println(" Add participant");
         System.out.println(" Remove participant");
         System.out.println(" Add result");
-        System.out.println(" main.Participant");
+        System.out.println(" Participant");
         System.out.println(" Teams");
         System.out.println(" Message (followed by your message)");
         System.out.println(" Reinitialize");
@@ -147,11 +146,7 @@ public class Main {
     }
 
     private static String normalizer(String s){
-        s = s.toLowerCase();
-        char[] name = s.toCharArray();
-        name[0] = ("" + (name[0])).toUpperCase().charAt(0);
-        s = new String(name);
-        return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
     }
 
     void addParticipant() {
@@ -194,7 +189,7 @@ public class Main {
 //        teamName = teamName.trim().substring(0,1).toUpperCase() + teamName.substring(1).toLowerCase();
 //        int id = 99;
 
-        Participant p = new Participant(firstName, lastName, teamName, id);
+        Participant p = new Participant(firstName, lastName, teamName);
         participantArrayList.add(p);
 
         System.out.println(p.getFirstName() + " " + p.getLastName() + " from "
@@ -232,10 +227,9 @@ public class Main {
         int writtenId = scannerHelper.readInt("Enter participants ID: ");
         boolean participantFound = false;
 
-
-        for (int x = 0; x < participantArrayList.size(); x++) {
-            if (participantArrayList.get(x).getId() == (writtenId)) {
-                addResultEvent(participantArrayList.get(x));
+        for (Participant participant: participantArrayList) {
+            if (participant.getId() == (writtenId)) {
+                addResultEvent(participant);
                 participantFound = true;
             }
         }
@@ -245,7 +239,7 @@ public class Main {
     }
 
 
-    private void addResultEvent(Participant p) {
+    private void addResultEvent(Participant participant) {
 
         String enterEventName = scannerHelper.readString("Enter event: ");
 
@@ -255,19 +249,20 @@ public class Main {
             return;
         }
 
-        if (p.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
+        if (participant.getAmountOfAttempts(e) < e.getAttemptsAllowed()) {
 
-            double result = scannerHelper.readDouble("main.Result for " + p.getFirstName() + " " + p.getLastName() + " from " + p.getTeamName()
+            double result = scannerHelper.readDouble("Result for " + participant.getFirstName()
+                    + " " + participant.getLastName() + " from " + participant.getTeamName()
                     + " in the event " + e.getEventName() + ": ");
 
             while (result < 0) {
                 result = scannerHelper.readDouble("To low value entered, write something else: ");
             }
 
-            Result r = new Result(result, p, e);
-            p.setResultToList(e, r);
+            Result r = new Result(result, participant, e);
+            participant.setResultToList(e, r);
 
-            System.out.println("main.Result " + result + " in " + e.getEventName() + " has been registred.");
+            System.out.println("Result " + result + " in " + e.getEventName() + " has been registred.");
         }
         else {
             System.out.println("To many tries!");
@@ -284,7 +279,6 @@ public class Main {
 
             String allResults = "";
             for (Event e : eventArrayList) {
-
 
                 ArrayList<Double> resultsByEvent = p.getResultsByEvent(e);
                 String resultString = "";
@@ -307,17 +301,16 @@ public class Main {
         }
         catch(NullPointerException e){
             System.out.println("No participant with that ID");
-
         }
     }
 
 
-    static class TopListPosition {
-        public final String name;
-        public final double score;
+    private static class TopListPosition {
+        final String name;
+        final double score;
         public final Event event;
 
-        public TopListPosition(String name, double score, Event event) {
+        TopListPosition(String name, double score, Event event) {
             this.name = name;
             this.score = score;
             this.event = event;
@@ -327,33 +320,33 @@ public class Main {
     private void resultEvent(String command) {
         System.out.println("Results for " + command + ":");
 
-        final String event = command;
-        final Event e = getEvent(event);
+        final Event event = getEvent(command);
 
         List<TopListPosition> topList = new ArrayList<>();
         for (Participant participant : this.participantArrayList) {
-            ArrayList<ResultList> participantsResults = participant.getResultListByEvent(e);
-            for (ResultList resultList : participant.getResultListByEvent(e)) {
-                if (participantsResults.isEmpty()){
-                    System.out.println("No event with that name or no results found.");
+            List<ResultList> participantsResults = participant.getResultListByEvent(event);
 
-                }
-                else{
-                    topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
-                            resultList.getResult().getResult(),
-                            resultList.getEvent()));
-                }
+            if (participantsResults.isEmpty()){
+                System.out.println("No event with that name or no results found.");
+            }
+
+            for (ResultList resultList : participantsResults) {
+                topList.add(new TopListPosition(participant.getFirstName() + " " + participant.getLastName(),
+                        resultList.getResult().getResult(),
+                        resultList.getEvent()));
             }
         }
         Collections.sort(topList, new Comparator<TopListPosition>() {
                     public int compare(TopListPosition obj1, TopListPosition obj2) {
-                        if (e.getBiggerBetter())
+                        if (event.getBiggerBetter()) {
                             return (int) (obj2.score - obj1.score);
-                        else
+                        } else {
                             return (int) (obj1.score - obj2.score);
+                        }
                     }
                 }
         );
+
         int placement = 1;
         TopListPosition previousPosition = null;
         for (int i = 0; i < topList.size(); i++) {
