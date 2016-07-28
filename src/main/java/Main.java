@@ -349,6 +349,7 @@ public class Main {
 
         int placement = 1;
         TopListPosition previousPosition = null;
+
         for (int i = 0; i < topList.size(); i++) {
             TopListPosition currentPosition = topList.get(i);
             if (previousPosition != null) {
@@ -365,8 +366,9 @@ public class Main {
 
     }
 
-    Integer getPosition(Participant p, final Event event) {
+    private Integer getPosition(Participant p, final Event event) {
         List<TopListPosition> topList = new ArrayList<>();
+
         for (Participant participant : this.participantArrayList) {
             for (ResultList resultList : participant.getResults()) {
                 if (resultList.getEvent().getEventName().equalsIgnoreCase(event.getEventName())) {
@@ -376,6 +378,7 @@ public class Main {
                 }
             }
         }
+
         Collections.sort(topList, new Comparator<TopListPosition>() {
             public int compare(TopListPosition obj1, TopListPosition obj2) {
                 if (event.getBiggerBetter())
@@ -384,12 +387,36 @@ public class Main {
                     return (int) (obj1.score - obj2.score);
             }
         });
-        int i = 1;
-        for (TopListPosition tlp : topList) {
-            if (tlp.name.equals(p.getFirstName() + " " + p.getLastName()))
-                return i;
-            ++i;
+
+        double firstPlace = topList.get(0).score;
+        double secondPlace = 0;
+        double thirdPlace = 0;
+
+        for(TopListPosition topListPosition: topList) {
+            double score = topListPosition.score;
+
+            if(score >= firstPlace) {
+                firstPlace = score;
+            } else if(score >= secondPlace) {
+                secondPlace = score;
+            } else if(score >= thirdPlace) {
+                thirdPlace = score;
+            }
         }
+
+        for(TopListPosition topListPosition: topList) {
+            if (topListPosition.name.equals(p.getFirstName() + " " + p.getLastName())) {
+                double score = topListPosition.score;
+                if(firstPlace == score) {
+                    return 1;
+                } else if(secondPlace == score) {
+                    return 2;
+                } else if(thirdPlace == score) {
+                    return 3;
+                }
+            }
+        }
+
         return null;
     }
 
@@ -420,6 +447,7 @@ public class Main {
 
         } else {
             Map<String, TeamMedals> teams = new HashMap<>();
+
             for (Participant participant : this.participantArrayList) {
                 for (Event event : this.eventArrayList) {
                     Integer position = this.getPosition(participant, event);
@@ -439,10 +467,13 @@ public class Main {
                     }
                 }
             }
+
             List<TeamResult> teamResults = new ArrayList<>();
+
             for (Entry<String, TeamMedals> entry : teams.entrySet()) {
                 teamResults.add(new TeamResult(entry.getValue(), entry.getKey()));
             }
+
             Collections.sort(teamResults, new Comparator<TeamResult>() {
                 public int compare(TeamResult obj1, TeamResult obj2) {
                     if (obj1.teamMedals.firstPlace != obj2.teamMedals.firstPlace) {
@@ -454,6 +485,7 @@ public class Main {
                     return obj2.teamMedals.thirdPlace - obj1.teamMedals.thirdPlace;
                 }
             });
+
             System.out.println("1st    2nd     3rd    Team name");
             System.out.println("*******************************");
             for (TeamResult teamResult : teamResults) {
